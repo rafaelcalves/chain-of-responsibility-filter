@@ -25,7 +25,7 @@ public abstract class StudentsFilter<E> extends AbstractFilter<List<Student>>
 	}
 
 	@Override
-	public List<Student> doFilter()
+	public List<Student> doFilter() throws Exception
 	{
 		List<Student> filterResult = getToFilter()
 				.stream()
@@ -36,7 +36,7 @@ public abstract class StudentsFilter<E> extends AbstractFilter<List<Student>>
 		return filterResult;
 	}
 
-	private List<Student> callNext(List<Student> filterResult)
+	private List<Student> callNext(List<Student> filterResult) throws Exception
 	{
 		getNext().setToFilter(filterResult);
 		return getNext().doFilter();
