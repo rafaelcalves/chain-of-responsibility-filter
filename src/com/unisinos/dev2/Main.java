@@ -1,10 +1,7 @@
 package com.unisinos.dev2;
 
 import com.unisinos.dev2.filter.Filter;
-import com.unisinos.dev2.filter.impl.AgeBiggerThanStudentFilter;
-import com.unisinos.dev2.filter.impl.CourseStudentFilter;
-import com.unisinos.dev2.filter.impl.NameStudentsFilter;
-import com.unisinos.dev2.filter.impl.NotImplementedFilter;
+import com.unisinos.dev2.filter.impl.*;
 import com.unisinos.dev2.model.Student;
 
 import java.util.ArrayList;
@@ -18,18 +15,22 @@ public class Main
 		System.out.println("Lista inicial:");
 		printStudents(students);
 
-		Filter filterNameCourse = new NameStudentsFilter(students,"Maria").setNext(new CourseStudentFilter("Direito"));
+		Filter<List<Student>> filterNameCourse = new NameStudentsFilter("Maria");
+		filterNameCourse.setNext(new CourseStudentFilter("Direito"));
+
 		System.out.println("Aplicado filtro de nome 'Maria' e curso 'Direito'\n");
-		printStudents((List<Student>) filterNameCourse.doFilter());
+		printStudents(filterNameCourse.doFilter(students));
 
-		Filter filterAge = new CourseStudentFilter(students,"Ciência da Computação").setNext(new AgeBiggerThanStudentFilter(20));
+		Filter<List<Student>> filterAge = new CourseStudentFilter("Ciência da Computação", new AgeBiggerThanStudentFilter(20));
+
 		System.out.println("Aplicado filtro de curso 'CC' e idade '> 20' \n");
-		printStudents((List<Student>) filterAge.doFilter());
+		printStudents(filterAge.doFilter(students));
 
-		Filter brokenFilter = new NameStudentsFilter(students,"Teste").setNext(new NotImplementedFilter()).setNext(new AgeBiggerThanStudentFilter(10));
+		filterAge.setNext(new NotImplementedFilter());
 		try
 		{
-			printStudents((List<Student>) brokenFilter.doFilter());
+			System.out.println("Ocorrendo exeção todos os filtros são cancelados em cascata \n");
+			printStudents(filterAge.doFilter(students));
 		} catch (IllegalAccessException e) {
 			System.out.println(e.getMessage());
 		}

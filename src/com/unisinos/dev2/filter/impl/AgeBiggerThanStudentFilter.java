@@ -1,10 +1,10 @@
 package com.unisinos.dev2.filter.impl;
 
+import com.unisinos.dev2.filter.Filter;
 import com.unisinos.dev2.filter.StudentsFilter;
 import com.unisinos.dev2.model.Student;
 
 import java.util.List;
-
 
 public class AgeBiggerThanStudentFilter extends StudentsFilter<Integer>
 {
@@ -14,9 +14,9 @@ public class AgeBiggerThanStudentFilter extends StudentsFilter<Integer>
 		super(filterBy);
 	}
 
-	public AgeBiggerThanStudentFilter(List<Student> toFilter, Integer filterBy)
+	public AgeBiggerThanStudentFilter(Integer filterBy, Filter<List<Student>> next)
 	{
-		super(toFilter, filterBy);
+		super(filterBy, next);
 	}
 
 	@Override protected boolean matchFilterBy(Student student)

@@ -7,27 +7,25 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
-
-public abstract class StudentsFilter<E> extends AbstractFilter<List<Student>>
+public abstract class StudentsFilter<T> extends AbstractFilter<List<Student>>
 {
-	private E filterBy;
+	private T filterBy;
 
-	public StudentsFilter(E filterBy)
+	public StudentsFilter(T filterBy)
 	{
-		super(null);
 		this.filterBy = filterBy;
 	}
 
-	public StudentsFilter(List<Student> toFilter, E filterBy)
+	public StudentsFilter(T filterBy, Filter<List<Student>> next)
 	{
-		super(toFilter);
+		super(next);
 		this.filterBy = filterBy;
 	}
 
 	@Override
-	public List<Student> doFilter() throws Exception
+	public List<Student> doFilter(List<Student> students) throws Exception
 	{
-		List<Student> filterResult = getToFilter()
+		List<Student> filterResult = students
 				.stream()
 				.filter(this::matchFilterBy)
 				.collect(Collectors.toList());
@@ -38,13 +36,12 @@ public abstract class StudentsFilter<E> extends AbstractFilter<List<Student>>
 
 	private List<Student> callNext(List<Student> filterResult) throws Exception
 	{
-		getNext().setToFilter(filterResult);
-		return getNext().doFilter();
+		return getNext().doFilter(filterResult);
 	}
 
 	protected abstract boolean matchFilterBy(Student student);
 
-	public E getFilterBy()
+	public T getFilterBy()
 	{
 		return filterBy;
 	}
