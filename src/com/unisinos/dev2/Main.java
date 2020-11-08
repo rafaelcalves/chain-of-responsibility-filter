@@ -21,7 +21,8 @@ public class Main
 		System.out.println("Aplicado filtro de nome 'Maria' e curso 'Direito'\n");
 		printStudents(filterNameCourse.doFilter(students));
 
-		Filter<List<Student>> filterAge = new CourseStudentFilter("Ciência da Computação", new AgeBiggerThanStudentFilter(20));
+		Filter<List<Student>> filterAge = new CourseStudentFilter("Ciência da Computação",
+				new AgeBiggerThanStudentFilter(20));
 
 		System.out.println("Aplicado filtro de curso 'CC' e idade '> 20' \n");
 		printStudents(filterAge.doFilter(students));
